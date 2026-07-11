@@ -1,0 +1,112 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box
+}
+body{
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  background:#050012;
+  font-family:"Microsoft Yahei",sans-serif;
+  position:relative;
+}
+/* 烟花画布全屏底层 */
+#fireCanvas{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+  pointer-events:none;
+}
+/* 文字容器居中 */
+.text-box{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  z-index:10;
+  text-align:center;
+}
+.line{
+  font-size:32px;
+  color:#fff;
+  opacity:0;
+  text-shadow:0 0 12px #ffd770;
+  margin:12px 0;
+  transition:opacity 0.8s ease;
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  white-space:nowrap;
+}
+/* 蛋糕容器，初始隐藏 */
+.cake-wrap{
+  position:fixed;
+  bottom:10%;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:10;
+  opacity:0;
+  transition:opacity 1.2s ease;
+}
+.cake{
+  width:220px;
+  height:160px;
+  position:relative;
+}
+/* 蛋糕底座 */
+.cake-bottom{
+  width:220px;
+  height:60px;
+  background:#ff79a8;
+  border-radius:10px 10px 0 0;
+  position:absolute;
+  bottom:0;
+}
+.cake-middle{
+  width:170px;
+  height:50px;
+  background:#ffb6c8;
+  border-radius:8px 8px 0 0;
+  position:absolute;
+  bottom:60px;
+  left:25px;
+}
+.cake-top{
+  width:110px;
+  height:40px;
+  background:#ffe1e9;
+  border-radius:6px 6px 0 0;
+  position:absolute;
+  bottom:110px;
+  left:55px;
+}
+/* 蜡烛 */
+.candle{
+  width:10px;
+  height:45px;
+  background:#fff;
+  position:absolute;
+  bottom:150px;
+  left:105px;
+  border-radius:3px;
+}
+/* 火苗动画 */
+.flame{
+  width:16px;
+  height:24px;
+  background:radial-gradient(#fffd90,#ff7722,#ff2200);
+  border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+  position:absolute;
+  bottom:190px;
+  left:102px;
+  animation:flame-shake 0.4s infinite alternate;
+}
+@keyframes flame-shake{
+  0%{transform:scale(1) rotate(-3deg);opacity:0.9}
+  100%{transform:scale(1.1) rotate(3deg);opacity:1}
+}

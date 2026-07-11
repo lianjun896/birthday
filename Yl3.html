@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生日祝福动画</title>
+<!-- 外部引入CSS -->
+<link rel="stylesheet" href="Yl3.css">
+</head>
+<body>
+    <audio autoplay loop volume="1">
+            <!-- autoplay自动播放，loop循环，volume音量1(100%) -->
+            <source src="Yl3.mp3" type="audio/mpeg">
+        </audio>
+<canvas id="fireCanvas"></canvas>
+
+<div class="text-box">
+  <div class="line" data-delay="0">伊茹</div>
+  <div class="line" data-delay="2000">今天是你的14岁生日</div>
+  <div class="line" data-delay="4000">你在这个世界的第5113天</div>
+  <div class="line" data-delay="6000">祝你生日快乐</div>
+  <div class="line" data-delay="8000">希望你在初三能继续努力</div>
+  <div class="line" data-delay="10000">能登上前十的领奖台</div>
+  <div class="line" data-delay="12000">体育能满分</div>
+  <div class="line" data-delay="14000">能考进理想的学校</div>
+  <div class="line" data-delay="16000">也希望你无论遇到什么困难都能坚持下去</div>
+  <div class="line" data-delay="18000">我知道你对自己要求很高</div>
+  <div class="line" data-delay="20000">考差一次会自责很久</div>
+  <div class="line" data-delay="22000">但也不要太伤心</div>
+  <div class="line" data-delay="24000">努力了总会有回报的</div>
+  <div class="line" data-delay="26000">我相信你一定会越来越好的</div>
+  <div class="line" data-delay="28000">也希望你能天天开心</div>
+  <div class="line" data-delay="30000">最后</div>
+  <div class="line" data-delay="32000">愿与你能与重要之人能相会</div>
+  <div class="line" data-delay="34000">——LJ<br>2026.08.02</div>
+</div>
+
+<div class="cake-wrap">
+  <div class="cake">
+    <div class="cake-bottom"></div>
+    <div class="cake-middle"></div>
+    <div class="cake-top"></div>
+    <div class="candle"></div>
+    <div class="flame"></div>
+  </div>
+</div>
+
+<script>
+// 烟花逻辑
+const canvas = document.getElementById("fireCanvas");
+const ctx = canvas.getContext("2d");
+function resize(){
+    canvas.width=innerWidth;
+    canvas.height=innerHeight
+}
+resize();
+window.onresize=resize;
+class Particle{
+  constructor(x,y,color){
+    this.x=x;
+    this.y=y;
+    this.c=color;
+    this.vx=(Math.random()-0.5)*9;
+    this.vy=(Math.random()-0.5)*9;
+    this.a=1;
+    this.dec=Math.random()*0.016+0.008;
+    this.r=Math.random()*2.5+1;
+  }
+  update(){
+    this.vy+=0.06;
+    this.x+=this.vx;
+    this.y+=this.vy;
+    this.a-=this.dec
+  }
+  draw(){
+    ctx.save();
+    ctx.globalAlpha=this.a;
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle=this.c;
+    ctx.fill();
+    ctx.restore();
+  }
+}
+let particles=[];
+const colors=["#ff4444","#ffdd44","#44ff99","#44aaff","#ff44cc","#fff"];
+function boom(x,y){
+  const c=colors[Math.floor(Math.random()*colors.length)];
+  for(let i=0;i<90;i++) particles.push(new Particle(x,y,c));
+}
+function fireLoop(){
+  ctx.fillStyle="rgba(5,0,18,0.14)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  for(let i=particles.length-1;i>=0;i--){
+    particles[i].update();
+    particles[i].draw();
+    if(particles[i].a<=0) particles.splice(i,1);
+  }
+  requestAnimationFrame(fireLoop);
+}
+fireLoop();
+function autoFire(){
+  boom(Math.random()*canvas.width,Math.random()*canvas.height*0.6);
+  setTimeout(autoFire,Math.random()*350+200);
+}
+autoFire();
+
+// 逐行文字动画
+const lines=document.querySelectorAll(".line");
+const cake=document.querySelector(".cake-wrap");
+let totalTime=0;
+lines.forEach(item=>{
+  const delay=Number(item.dataset.delay);
+  // 文字出现
+  setTimeout(()=>{item.style.opacity="1"},delay);
+  // 文字消失
+  setTimeout(()=>{item.style.opacity="0"},delay+2000);
+  totalTime=delay+2000;
+})
+// 全部文字播放完成后显示蛋糕
+setTimeout(()=>{cake.style.opacity="1"},totalTime+1000);
+</script>
+</body>
+</html>
